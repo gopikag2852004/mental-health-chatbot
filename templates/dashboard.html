@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Digital Twin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body { background: #eef2f3; margin: 0; font-family: Arial, sans-serif; }
+
+        .dashboard-container {
+            display: flex;
+            max-width: 1100px;
+            width: 95%;
+            height: 85vh;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin: auto;
+            margin-top: 5vh;
+        }
+
+        .sidebar {
+            width: 30%;
+            background: #2c3e50;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #eee;
+        }
+
+        .chat-area {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat-window {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 15px;
+            max-width: 80%;
+            font-size: 14px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .user-msg {
+            background: #3498db;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .bot-msg {
+            background: #fff;
+            color: #2c3e50;
+            align-self: flex-start;
+            border: 1px solid #ddd;
+            border-bottom-left-radius: 2px;
+        }
+
+        .input-area {
+            padding: 16px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+            background: white;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            height: 44px;
+            padding: 0 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+#send-btn {
+    height: 44px;
+    width: 70px;
+    padding: 0;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    top: -6px;   /* moves only the button upward */
+}
+        #send-btn:hover { background: #2980b9; transform: translateY(-1px); }
+        #send-btn:active { transform: translateY(0); }
+        #send-btn:disabled { background: #bdc3c7; cursor: not-allowed; }
+
+        .status-box {
+            background: #34495e;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+        }
+
+        .status-box p { margin: 6px 0; }
+
+        #mood-score { font-weight: bold; font-size: 1.1rem; }
+        #diagnosis { font-weight: bold; font-size: 1rem; color: #f1c40f; }
+
+        canvas {
+            background: #1a252f;
+            border-radius: 8px;
+            margin-top: 10px;
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        a.logout { color: #ff7675; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+    <p>User: <strong>{{ current_user.username }}</strong></p>
+    
+    <div class="status-box">
+        <p><strong>Status:</strong> <span id="twin-status">Ready</span></p>
+        <p><strong>Mood Score:</strong> <span id="mood-score">0.00</span></p>
+        <p><strong>Diagnosis:</strong> <span id="diagnosis">N/A</span></p>
+    </div>
+            
+            <div class="status-box">
+                <p><strong>Mood Trend</strong></p>
+                <canvas id="moodChart"></canvas>
+            </div>
+            
+            <div class="sidebar-buttons">
+    <a href="/progress" class="btn-progress">View Progress</a>
+    <a href="/logout" class="btn-logout">Logout</a>
+</div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-area">
+            <div id="chat-window">
+                <div class="message bot-msg">
+                    Hello! I am your Digital Twin. How do you feel today?
+                </div>
+            </div>
+            
+            <form class="input-area" id="chat-form">
+                <input type="text" id="user-input" placeholder="Type your message..." required autocomplete="off">
+                <button type="submit" id="send-btn">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatForm = document.getElementById('chat-form');
+            const chatWindow = document.getElementById('chat-window');
+            const userInput = document.getElementById('user-input');
+            const moodDisplay = document.getElementById('mood-score');
+            const statusDisplay = document.getElementById('twin-status');
+            const diagnosisDisplay = document.getElementById('diagnosis');
+
+            // Initialize Chart
+            const ctx = document.getElementById('moodChart').getContext('2d');
+            let moodHistory = [0.0];
+            let timeLabels = ['Start'];
+
+            const moodChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timeLabels,
+                    datasets: [{
+                        data: moodHistory,
+                        borderColor: '#2ecc71',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { min: -1, max: 1 } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            chatForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const message = userInput.value.trim();
+                if (!message) return;
+
+                appendMessage(message, 'user-msg');
+                userInput.value = '';
+
+                try {
+                    const response = await fetch('/get_response', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message })
+                    });
+
+                    if (!response.ok) throw new Error('Server error');
+                    const data = await response.json();
+
+                    appendMessage(data.reply, 'bot-msg');
+
+                    // Update Mood and Status
+                    const mood = data.mood_score ?? 0;
+                    const status = data.assessment ?? "Ready";
+                    const diagnosis = data.diagnosis ?? "N/A";
+
+                    moodDisplay.innerText = mood.toFixed(2);
+                    moodDisplay.style.color = mood >= 0 ? '#2ecc71' : '#e74c3c';
+                    statusDisplay.innerText = status;
+                    diagnosisDisplay.innerText = diagnosis;
+
+                    // Update chart
+                    moodHistory.push(mood);
+                    timeLabels.push(new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
+                    moodChart.update();
+
+                } catch (error) {
+                    console.error(error);
+                    appendMessage("Error: Could not connect to the Digital Twin AI.", 'bot-msg');
+                }
+            });
+
+            function appendMessage(text, className) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ${className}`;
+                msgDiv.innerText = text;
+                chatWindow.appendChild(msgDiv);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>

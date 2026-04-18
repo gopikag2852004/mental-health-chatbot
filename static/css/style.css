@@ -1,0 +1,134 @@
+/* --- Global Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- Body --- */
+body {
+    background-color: #f0f7f8; /* soft pastel blue */
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sidebar-buttons{
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-progress{
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: #2ecc71;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-progress:hover{
+    background: #27ae60;
+}
+
+.btn-logout{
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: #e74c3c;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-logout:hover{
+    background: #c0392b;
+}
+/* --- Container --- */
+.container {
+    background-color: #ffffff;
+    padding: 40px 50px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+/* --- Headings --- */
+h1, h2 {
+    text-align: center;
+    color: #2e4f4f; /* calming teal shade */
+    margin-bottom: 20px;
+}
+
+/* --- Forms --- */
+input[type="text"], input[type="password"], textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 8px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #70a0a0; /* soft accent on focus */
+    box-shadow: 0 0 5px rgba(112, 160, 160, 0.5);
+}
+
+/* --- Buttons --- */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #70a0a0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #5b8282;
+}
+
+/* --- Links --- */
+a {
+    color: #70a0a0;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* --- Flash Messages --- */
+.flash {
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.flash.success {
+    background-color: #d4f4dd;
+    color: #237a23;
+}
+
+.flash.error {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
