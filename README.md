@@ -17,9 +17,9 @@ Sequential modeling: LSTM
 Classification: SVM
 
 ## Tech Stack
-Language: Python
-Frontend: HTML, CSS, JavaScript
-Backend: Flask
-Database: SQLAlchemy
+Language: Python                                                                                         
+Frontend: HTML, CSS, JavaScript                                                                                                                 
+Backend: Flask                                                                                                                        
+Database: SQLAlchemy                                                                            
 NLP Model: BERT
-Classical ML: Scikit-learn (SVM Classifier)
+Classical ML: Scikit-learn (SVM Classifier)                                                                                                 
