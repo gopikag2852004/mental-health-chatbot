@@ -13,5 +13,5 @@ Mental Health Chatbot: An NLP-based chatbot that provides basic emotional suppor
 
 ## Methodology
 NLP preprocessing: BERT                                                                       
-Sequential modeling: LSTM
+Sequential modeling: LSTM                                                                                                                                     
 Classification: SVM
