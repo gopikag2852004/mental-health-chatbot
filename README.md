@@ -26,7 +26,7 @@ Classical ML: Scikit-learn (SVM Classifier)
  
 ## Architecture
 
-![archi](screenshots/Screenshot 2026-06-09 021541.png)
+![archi](screenshots/Screenshot%202026-06-09%20021541.png)
 
 
   
