@@ -12,18 +12,21 @@ Mental Health Chatbot: An NLP-based chatbot that provides basic emotional suppor
 ![Emotion graph](screenshots/emotiongraph.png)
 
 ## Methodology
-NLP preprocessing: BERT
-Sequential modeling: LSTM
+NLP preprocessing: BERT  
+Sequential modeling: LSTM  
 Classification: SVM
 
 ## Tech Stack
-Language: Python
-Frontend: HTML, CSS, JavaScript
-Backend: Flask
-Database: SQLAlchemy
-NLP Model: BERT 
-Classical ML: Scikit-learn (SVM Classifier)
+Language: Python  
+Frontend: HTML, CSS, JavaScript  
+Backend: Flask  
+Database: SQLAlchemy  
+NLP Model: BERT   
+Classical ML: Scikit-learn (SVM Classifier)  
  
+## Architecture
+
+![archi](screenshots/Screenshot 2026-06-09 021541.png)
 
 
   
