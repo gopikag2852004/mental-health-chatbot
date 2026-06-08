@@ -24,7 +24,7 @@ Database: SQLAlchemy
 NLP Model: BERT   
 Classical ML: Scikit-learn (SVM Classifier)  
  
-## Architecture
+## Architecture Diagram
 
 ![archi](screenshots/Screenshot%202026-06-09%20021541.png)
 
