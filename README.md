@@ -1,4 +1,4 @@
-# Mental-health-chatbot
+## Mental-health-chatbot
 Mental Health Chatbot: An NLP-based chatbot that provides basic emotional support and self-care guidance. It uses context-aware responses to simulate empathetic conversations for managing stress and anxiety. Built with Python using a hybrid rule-based and ML approach.
 
 ## Final
@@ -15,3 +15,11 @@ Mental Health Chatbot: An NLP-based chatbot that provides basic emotional suppor
 NLP preprocessing: BERT                                                                       
 Sequential modeling: LSTM                                                                                                                                     
 Classification: SVM
+
+## Tech Stack
+Language: Python
+Frontend: HTML, CSS, JavaScript
+Backend: Flask
+Database: SQLAlchemy
+NLP Model: BERT
+Classical ML: Scikit-learn (SVM Classifier)
